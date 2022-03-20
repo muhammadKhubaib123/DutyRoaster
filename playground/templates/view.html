@@ -1,0 +1,99 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+<header>
+    <ul>
+        {% if user.is_authenticated %}
+            <li>Hello, {{user.username}}</li>
+            <li><a href="/logout">Logout</a></li>
+        {% endif %} 
+        </ul>
+</header>
+<div class="after-success">
+    <div class="row">
+        {% for key, value in tab.items %}
+        <h1 class="shift">{{key}}</h1>
+        <h1 class="shift">Shift</h1>
+        {% for x in value %}
+        <div>{{ x | safe}}</div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+<style>
+    .shift{
+    font-size: 25px;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+}
+table{
+ border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+table th,
+table td {
+    padding: 12px 15px;
+}
+table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr {
+    background-color: #f3f3f3;
+}
+
+table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+.success-msg {
+  color: #270;
+  background-color: #DFF2BF;
+   margin: 10px 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+}
+.after-success
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+html, body {
+    height: 100%;
+    background-color: #152733;
+    overflow: auto;
+}
+header ul{
+    display: flex;
+    width: 100%;
+    list-style-type: none;
+    justify-content: space-between;
+}
+header ul li{
+    color: #fff;
+    float: right;
+}
+header ul li a{
+    color: #fff;
+}
+
+header {
+    padding: 20px 40px;
+}
+</style>

@@ -21,6 +21,9 @@ from playground import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.say_hello),
+    path('',views.login),
+    path('roaster',views.say_hello),
     path('playground/', include('playground.urls')),
+    path('view',views.view),
+    path('logout',views.logout)
 ]
