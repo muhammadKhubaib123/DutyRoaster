@@ -43,10 +43,6 @@
                             <span class="close2">&times;</span>
                             <img alt="" src='https://www.linkpicture.com/q/res_1.png' type='image' id="myImg1">
                         </div>
-                        <div class="col-md-12" style="margin-top: 20px;">
-                            <label>Enter total shifts: </label>
-                           <input class="form-control" name="shifts" type="number">
-                        </div>
                         <div class="form-button" style="text-align: center;">
                             <button id="submit" style="margin-top: 20px;" type="submit" class="btn btn-primary ">Generate Roaster</button>
                         </div>
@@ -65,10 +61,25 @@
             {% endfor %}
         </div>
         {% endif %}
-        {% for key, value in tab.items %}
-        <h1 class="shift">Shift {{ forloop.counter }}</h1>i
-        <div>{{ value | safe}}</div>
-        {% endfor %}
+
+        <table>
+            <thead>
+                    <th>Room</th>
+                    <th>Total Students</th>
+                    <th>Date</th>
+                    <th>Shift</th>
+                    <th>Invigilator</th>
+            </thead>
+            <tbody>
+                {% for key, values in tab.items %}
+                  <tr>
+                      {% for value in values %}
+                        <td>{{ value | safe}}</td>
+                        {% endfor %}
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 <script >

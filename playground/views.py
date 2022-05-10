@@ -4,7 +4,7 @@ from django.conf import settings
 from sqlalchemy import create_engine
 from Roaster.settings import MEDIA_URL
 from .models import FilesUpload
-from .models import RoasterTables
+from .models import Table
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 import pandas as pd
@@ -50,33 +50,31 @@ def say_hello(request, *args, **kwargs):
     if request.method=="POST":
         file1=request.FILES['faculty_data']
         file2=request.FILES['resources']
-        shift=int(request.POST['shifts'])
         title=request.POST['title']
         titl = title.replace(" ", "")
         time=datetime.datetime.now()
         titl=titl+str(time)
         table["Ali"]=1
-        table[str(titl)]=shift
-        RoasterTables.objects.create(table_name=titl,shift=shift)
+        Table.objects.create(table_name=titl)
         fs=FileSystemStorage()
         first_file1=fs.save(file1.name,file1)
         first_file2=fs.save(file2.name,file2)
         fl=fs.url(first_file1)
         fl1=fs.url(first_file2)
         print(fl1)
-        sd = pd.read_csv(fl1.strip("/"), usecols = ['Start Date'])
-        ed = pd.read_csv(fl1.strip("/"), usecols = ['End Date'])
+        sd = pd.read_csv(fl1.strip("/"), usecols = ['Date'])
         total_duties=pd.read_csv(fl1.strip("/"), usecols = ['Total Duties'])
         i=sd.values.flat[0] 
-        j=ed.values.flat[0]
-        startyear, startmonth, startday = map(int, i.split('-'))
-        endyear, endmonth, endday = map(int, j.split('-'))
-        start_date = date(startyear,startmonth,startday)
-        end_date = date(endyear,endmonth,endday)
-        dates=[]
-        for single_date in daterange(start_date, end_date):
-            dates.append(single_date.strftime("%Y-%m-%d"))
-
+        print(i)
+        print(list(i))
+        # j=ed.values.flat[0]
+        # startyear, startmonth, startday = map(int, i.split('-'))
+        # endyear, endmonth, endday = map(int, j.split('-'))
+        # start_date = date(startyear,startmonth,startday)
+        # end_date = date(endyear,endmonth,endday)
+        sd = sd.dropna()
+        print(sd)
+        dates=sd.Date.tolist()
         print(dates)
         fac = pd.read_csv(fl.strip("/"),usecols = ['Faculty Name','Designation'])
         print(fac)
@@ -192,58 +190,100 @@ def say_hello(request, *args, **kwargs):
                 faculty[randomfac][1]+=1
         print(faculty)
             
-        rooms = pd.read_csv(fl1.strip("/"), usecols = ['Rooms'])
-        room=[]
-        room=rooms.values.flatten()
-        name,duties=random.choice(list(faculty.items()))
-        rows,cols=(room.size,len(dates))
-        duts={}
-        for shif in range(shift):
-            duts["duty"+str(shif)] = [[0 for i in range(cols)] for j in range(rows)]
-        locals().update(duts)
-        fac=""
-        total=0
-        no=0
-        for shifts in range(shift):
-            for dt in range(cols):
-                for rm in range(rows):
-                    no=0
-                    while(True):
-                        local_list=[]
-                        randomfac,dut=random.choice(list(faculty.items()))
-                        duties=int(dut[1])
-                        find=0
-                        if duties>0:
-                            for i in range(rows):
-                                if isinstance(duts["duty"+str(shifts)][i][dt], str)==True:
-                                    if randomfac in duts["duty"+str(shifts)][i][dt]:
-                                        find=1
-                                        break
-                            if find==1:
-                                continue
-                            else:
-                                faculty[randomfac][2]+=1
-                                duts["duty"+str(shifts)][rm][dt]=randomfac+" ("+str(faculty[randomfac][2])+")"
-                                faculty[randomfac][1]=duties-1
-                                break
-                        else:
+        rooms = pd.read_csv(fl1.strip("/"), usecols = ['Index','Room','Total','Date','Shift'])
+        rsc=rooms.set_index('Index').T.to_dict('list')
+
+        print(rsc)
+        # room=[]
+        # room=rooms.values.flatten()
+        # name,duties=random.choice(list(faculty.items()))
+        # rows,cols=(room.size,len(dates))
+        # duts={}
+        # for shif in range(shift):
+        #     duts["duty"+str(shif)] = [[0 for i in range(cols)] for j in range(rows)]
+        # locals().update(duts)
+        # fac=""
+        # total=0
+        # no=0
+        for key,values in rsc.items():
+            d_list=[]
+            d_list=values
+            d_list.append('')
+            rsc[key]=d_list
+        print(rsc)
+        for key,values in rsc.items():
+            chk=2
+            if(values[1]>40):
+                chk=3
+            for i in range(chk):
+                while(True):
+                    randomfac,dut=random.choice(list(faculty.items()))
+                    duties=int(dut[1])
+                    find=0
+                    if duties>0:
+                        newdict=rsc
+                        for skey,svalues in rsc.items():
+                            if(values[2]==svalues[2] and values[3]==svalues[3]):
+                                if(randomfac in svalues[4]):
+                                    print(randomfac,svalues[4])
+                                    find=1
+                                    break
+                        if find==1:
                             continue
-            print()
-        disp={}
-        html={}
-        tab={}
-        count=1
+                        else:
+                            values[4]=values[4]+" "+randomfac
+                            break
+                    else:
+                        continue
+        print(rsc)
+        # for shifts in range(shift):
+        #     for dt in range(cols):
+        #         for rm in range(rows):
+        #             no=0
+        #             while(True):
+        #                 local_list=[]
+        #                 randomfac,dut=random.choice(list(faculty.items()))
+        #                 duties=int(dut[1])
+        #                 find=0
+        #                 if duties>0:
+        #                     for i in range(rows):
+        #                         if isinstance(duts["duty"+str(shifts)][i][dt], str)==True:
+        #                             if randomfac in duts["duty"+str(shifts)][i][dt]:
+        #                                 find=1
+        #                                 break
+        #                     if find==1:
+        #                         continue
+        #                     else:
+        #                         faculty[randomfac][2]+=1
+        #                         duts["duty"+str(shifts)][rm][dt]=randomfac+" ("+str(faculty[randomfac][2])+")"
+        #                         faculty[randomfac][1]=duties-1
+        #                         break
+        #                 else:
+        #                     continue
+        #     print()
+        # disp={}
+        # html={}
+        # tab={}
+        # count=1
         engine = create_engine('postgresql+psycopg2://postgres:khubi123@localhost/Roaster')
-        for shif in range(shift):
-            disp["disp"+str(shif)]=pd.DataFrame(duts["duty"+str(shif)],columns=dates)
-            print(disp["disp"+str(shif)])
-            disp["disp"+str(shif)].index=room
-            disp["disp"+str(shif)].to_sql(titl+str(count), engine)
-            html["html"+str(shif)]=disp["disp"+str(shif)].to_html()
-            tab["tab"+str(shif)]=html["html"+str(shif)]
-            count+=1
+        datafrm=pd.DataFrame.from_dict(rsc, orient ='index')
+        datafrm.to_sql(titl, engine)
+        # for shif in range(shift):
+        #     disp["disp"+str(shif)]=pd.DataFrame(duts["duty"+str(shif)],columns=dates)
+        #     print(disp["disp"+str(shif)])
+        #     disp["disp"+str(shif)].index=room
+        #     disp["disp"+str(shif)].to_sql(titl+str(count), engine)
+        #     html["html"+str(shif)]=disp["disp"+str(shif)].to_html()
+        #     tab["tab"+str(shif)]=html["html"+str(shif)]
+        #     count+=1
+        disp=rsc
+        # print(disp)
+        # html=disp.to_html()
+        # tab=html
+        # print(tab)
         messages.success(request, 'Roaster Generated Successfully')
-    return render(request,'roster.html',{'tab': tab})
+        return render(request,'roster.html',{'tab': disp})
+    return render(request,'roster.html')
 def view(request):
     if request.user.is_authenticated:
         print('yes the user is logged-in')
@@ -252,19 +292,22 @@ def view(request):
         return redirect('/')
     tab={}
     engine = create_engine('postgresql+psycopg2://postgres:khubi123@localhost/Roaster')
-    query_results = RoasterTables.objects.all()
+    query_results = Table.objects.all()
     for item in query_results:
         name=item.table_name
-        roster_shift=item.shift
-        list_frame=[]
-        for sh in range(roster_shift):
-            df = pd.read_sql_query('select * from "{}{}"'.format(name,(sh+1)),con=engine)
-            df=df.style.applymap(lambda x: "background-color: red;color: white" if x==fullname else "")
-            html=df.to_html()
-            list_frame.append(html)
-        tab[name]=list_frame
+        df = pd.read_sql_query('select * from "{}"'.format(name),con=engine)
+        new=df.set_index('index').T.to_dict('list')
+        html=df.to_html()
+        # roster_shift=item.shift
+        # list_frame=[]
+        # for sh in range(roster_shift):
+        #     df = pd.read_sql_query('select * from "{}{}"'.format(name,(sh+1)),con=engine)
+        #     df=df.style.applymap(lambda x: "background-color: red;color: white" if x==fullname else "")
+        #     html=df.to_html()
+        #     list_frame.append(html)
+        tab=html
 
-    return render(request,'view.html',{"tab":tab})
+    return render(request,'view.html',{"tab":new})
 def daterange(start_date, end_date):
     for n in range(int((end_date - start_date).days)+1):
         yield start_date + timedelta(n)

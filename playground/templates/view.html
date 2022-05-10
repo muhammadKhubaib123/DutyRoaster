@@ -12,13 +12,24 @@
 </header>
 <div class="after-success">
     <div class="row">
-        {% for key, value in tab.items %}
-        <h1 class="shift">{{key}}</h1>
-        <h1 class="shift">Shift</h1>
-        {% for x in value %}
-        <div>{{ x | safe}}</div>
-        {% endfor %}
-        {% endfor %}
+        <table>
+            <thead>
+                    <th>Room</th>
+                    <th>Total Students</th>
+                    <th>Date</th>
+                    <th>Shift</th>
+                    <th>Invigilator</th>
+            </thead>
+            <tbody>
+                {% for key, values in tab.items %}
+                  <tr>
+                      {% for value in values %}
+                        <td>{{ value | safe}}</td>
+                        {% endfor %}
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 <style>

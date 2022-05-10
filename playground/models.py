@@ -4,7 +4,9 @@ from django.db import models
 class FilesUpload(models.Model):
     file=models.FileField()
 
-class RoasterTables(models.Model):
-
+class Table(models.Model):
     table_name = models.CharField(max_length = 120)
-    shift = models.IntegerField()
+class RTable(models.Model):
+    table_name = models.CharField(max_length = 130)
+class newTable(models.Model):
+    table_name = models.CharField(max_length = 130)
