@@ -1,0 +1,68 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+<header>
+    <ul>
+        {% if user.is_authenticated %}
+            <li>Hello, {{user.username}}</li>
+            <li><a href="/view">View Previous Roasters</a></li>
+            <li><a href="/logout">Logout</a></li>
+        {% endif %} 
+        </ul>
+</header>
+
+<div class="container" {% if messages %}style="display:none;"{% endif %}>
+    <a href="/seating">Generate Seating Plan</a>
+    <a href="/generate-roaster">Generate Roaster</a>
+</div>
+
+<style>
+    *, body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+    height: 100%;
+    background-color: #152733;
+    overflow: auto;
+}
+
+body {
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+header ul{
+    display: flex;
+    width: 100%;
+    list-style-type: none;
+    justify-content: space-between;
+}
+header ul li{
+    color: #fff;
+    float: right;
+}
+header ul li a{
+    color: #fff;
+}
+
+header {
+    padding: 20px 40px;
+}
+.container a{
+    color: #fff;
+    padding: 40px 100px;
+    border: 2px solid #fff;
+    border-radius: 20px
+;text-decoration: none;}
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    height: 90%;
+    align-items: center;
+}
+</style>

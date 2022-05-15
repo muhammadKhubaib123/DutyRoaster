@@ -7,7 +7,8 @@ from . import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns=[
     path('hello/',views.say_hello),
-    path('login',views.login)
+    path('login',views.login),
+    path('seating',views.seatingplangen)
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

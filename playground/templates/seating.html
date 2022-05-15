@@ -18,33 +18,33 @@
             {% csrf_token %}
             <div class="form-content">
                 <div class="form-items">
-                    <h3>Automatic Duty Roaster</h3>
+                    <h3>Seating Plan generator</h3>
                     <form class="requires-validation" novalidate>
                         <div class="col-md-12" style="margin-top: 20px;">
-                            <label>Enter Roaster Title: </label>
+                            <label>Enter Seating Plan Title: </label>
                            <input class="form-control" name="title" type="text">
                         </div>
                         <div class="col-md-12" style="margin-top: 20px;">
-                            <label>Upload Faculty CSV: </label>
-                           <input class="form-control" name="faculty_data" type="file" required>
-                           <p class="facpop">Please click to check csv format for faculty data.</p>
+                            <label>Upload Course CSV: </label>
+                           <input class="form-control" name="course_data" type="file" required>
+                           <p class="facpop">Please click to check csv format for Course data.</p>
                         </div>
                         <div class="pop">
                             <span class="close">&times;</span>
-                            <img alt="" src='https://www.linkpicture.com/q/fac.png' type='image' id="myImg">
+                            <img alt="" src='https://www.linkpicture.com/q/courese-list.png' type='image' id="myImg">
                         </div>
 
                         <div class="col-md-12" style="margin-top: 20px;">
-                            <label>Upload Resource CSV: </label>
-                           <input class="form-control" name="resources" type="file" required>
-                           <p class="Respop">Please click to check csv format for Resources data.</p>
+                            <label>Upload Datesheet CSV: </label>
+                           <input class="form-control" name="datesheet" type="file" required>
+                           <p class="Respop">Please click to check csv format for Datesheet.</p>
                         </div>
                         <div class="pop2">
                             <span class="close2">&times;</span>
-                            <img alt="" src='https://www.linkpicture.com/q/res_1.png' type='image' id="myImg1">
+                            <img alt="" src='https://www.linkpicture.com/q/Datesheet.png' type='image' id="myImg1">
                         </div>
                         <div class="form-button" style="text-align: center;">
-                            <button id="submit" style="margin-top: 20px;" type="submit" class="btn btn-primary ">Generate Roaster</button>
+                            <button id="submit" style="margin-top: 20px;" type="submit" class="btn btn-primary ">Generate Seating Plan</button>
                         </div>
                     </form>
                 </div>
@@ -61,24 +61,43 @@
             {% endfor %}
         </div>
         {% endif %}
-        <table>
-            <thead>
-                    <th>Room</th>
-                    <th>Total Students</th>
-                    <th>Date</th>
-                    <th>Shift</th>
-                    <th>Invigilator</th>
-            </thead>
-            <tbody>
-                {% for key, values in tab.items %}
-                  <tr>
-                      {% for value in values %}
-                        <td>{{ value | safe}}</td>
-                        {% endfor %}
-                  </tr>
+
+        <div>
+            {% for key, values in Plan.items %}
+                <div>
+                    <h2>{{key}}</h2>
+                </div>
+                {% for key1,value1 in values.items %}
+                    <h3>{{ key1 | safe}}</h3>
+                    <table>
+                        <tr>
+                            <!-- <th>Room</th> -->
+                            <!-- {% for key2,value2 in course.items %}
+                                {% for key3,value3 in value2.items %}
+                                  {% for lst in value3 %}
+                                   <th>{{ lst | safe}}</th>
+                                {% endfor %}
+                                {% endfor %}
+                            {% endfor %} -->
+                            
+                        </tr>
+                            {% for key2,value2 in value1.items %}
+                            <tr>
+                                {% if value2 %}
+                                    <td>{{ key2 | safe}}</td>
+                                    {% for key3,value3 in value2.items %}
+                                    <td>{{ key3 }} : {{ value3 | safe}}</td>
+                                    {% endfor %}
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                    </table>
                 {% endfor %}
-            </tbody>
-        </table>
+            {% endfor %}
+        </div>
+        <div class="form-button" style="text-align: center;">
+            <a id="submit" style="margin-top: 20px;" href="/roaster" class="btn btn-primary ">Generate Roaster</a>
+        </div>
     </div>
 </div>
 <script >
@@ -261,9 +280,6 @@ table th,
 table td {
     padding: 12px 15px;
 }
-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
 
 table tbody tr {
     background-color: #f3f3f3;
@@ -289,6 +305,7 @@ table tbody tr.active-row {
     justify-content: center;
     align-items: center;
     height: auto;
+    margin-bottom: 50px;
 }
 .pop {
   position: fixed; /* Stay in place */
@@ -381,7 +398,14 @@ header ul li a{
 header {
     padding: 20px 40px;
 }
-body {
-  overflow-x: hidden; /* Hide horizontal scrollbar */
+.row {
+    margin: 0;
 }
+h2 {
+    color: #fff;
+}
+
+h3 {
+    color: #fff;
+    }
 </style>

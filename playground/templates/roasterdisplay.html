@@ -1,0 +1,207 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+<header>
+    <ul>
+        {% if user.is_authenticated %}
+            <li>Hello, {{user.username}}</li>
+            <li><a href="/view">View Previous Roasters</a></li>
+            <li><a href="/logout">Logout</a></li>
+        {% endif %} 
+        </ul>
+</header>
+<div class="after-success">
+    <div class="row">
+        {% if messages %}
+        <div class="success-msg">
+            {% for message in messages %}
+            <p  {% if message.tags %} class=" {{ message.tags }} " {% endif %}><i class="fa fa-check"></i> {{ message }} </p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <table>
+            <thead>
+                    <th>Room</th>
+                    <th>Total Students</th>
+                    <th>Date</th>
+                    <th>Shift</th>
+                    <th>Invigilator</th>
+            </thead>
+            <tbody>
+                {% for key, values in tab.items %}
+                  <tr>
+                      {% for value in values %}
+                        <td>{{ value | safe}}</td>
+                        {% endfor %}
+                  </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    *, body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+    height: 100%;
+    background-color: #152733;
+    overflow: auto;
+}
+
+
+.invalid-feedback{
+    color: #ff606e;
+}
+
+.valid-feedback{
+   color: #2acc80;
+}
+table{
+ border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+table th,
+table td {
+    padding: 12px 15px;
+}
+table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr {
+    background-color: #f3f3f3;
+}
+
+table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+.success-msg {
+  color: #270;
+  background-color: #DFF2BF;
+   margin: 10px 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+}
+.after-success
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+.pop {
+  position: fixed; /* Stay in place */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+.pop2{
+  position: fixed; /* Stay in place */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+.close2 {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close2:hover,
+.close2:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+.facpop{
+    margin: 10px 0px !important;
+    cursor: pointer;
+}
+.Respop{
+    margin: 10px 0px !important;
+    cursor: pointer;
+}
+.shift{
+    font-size: 25px;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+}
+header ul{
+    display: flex;
+    width: 100%;
+    list-style-type: none;
+    justify-content: space-between;
+}
+header ul li{
+    color: #fff;
+    float: right;
+}
+header ul li a{
+    color: #fff;
+}
+
+header {
+    padding: 20px 40px;
+}
+body {
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+</style>

@@ -22,8 +22,11 @@ from playground import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.login),
-    path('roaster',views.say_hello),
+    path('roaster',views.gen_roaster),
     path('playground/', include('playground.urls')),
     path('view',views.view),
-    path('logout',views.logout)
+    path('logout',views.logout),
+    path('seating',views.seatingplangen),
+    path('home',views.home),
+    path('generate-roaster',views.say_hello)
 ]
