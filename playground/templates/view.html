@@ -10,8 +10,14 @@
         {% endif %} 
         </ul>
 </header>
+<div class="Name" style="display: none;">{{user.get_full_name}}</div>
+
 <div class="after-success">
     <div class="row">
+        <div class="search">
+            <input type="text" id="name">
+            <button class="my-duties btn btn-primary ">search</button>
+        </div>
         <table>
             <thead>
                     <th>Room</th>
@@ -32,6 +38,19 @@
         </table>
     </div>
 </div>
+<script>
+    jQuery( ".my-duties" ).click(function() {
+    var search = jQuery( "#name" ).val();
+    jQuery(document).ready(function () {
+        jQuery("td").css('background','unset');
+            jQuery("td").css('color','unset');
+        jQuery("td:contains('"+search+"')").each(function () {
+            jQuery(this).css('background','red');
+            jQuery(this).css('color','#fff');
+        });
+    });
+});
+</script>
 <style>
     .shift{
     font-size: 25px;
@@ -107,4 +126,7 @@ header ul li a{
 header {
     padding: 20px 40px;
 }
+input#name {padding: 5px;}
+
+.search {text-align: end;}
 </style>

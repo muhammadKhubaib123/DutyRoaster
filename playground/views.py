@@ -466,10 +466,12 @@ def gen_roaster(request, *args, **kwargs):
                 else:
                     continue
     print(rsc)
-
-    # engine = create_engine('postgresql+psycopg2://postgres:khubi123@localhost/Roaster')
-    # datafrm=pd.DataFrame.from_dict(rsc, orient ='index')
-    # datafrm.to_sql(titl, engine)
+    time=datetime.datetime.now()
+    titl=str(time)
+    Table.objects.create(table_name=titl)
+    engine = create_engine('postgresql+psycopg2://postgres:khubi123@localhost/Roaster')
+    datafrm=pd.DataFrame.from_dict(rsc, orient ='index')
+    datafrm.to_sql(titl, engine)
     disp=rsc
     messages.success(request, 'Roaster Generated Successfully')
     return render(request,'roasterdisplay.html',{'tab': disp})
